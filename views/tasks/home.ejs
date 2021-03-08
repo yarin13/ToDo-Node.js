@@ -1,0 +1,43 @@
+<% layout('layouts/boilerplate') %>
+
+
+    <table class="table table-bordered border-primary">
+        <tr>
+            <td>Owner</td>
+            <td>Title</td>
+            <td>Is It Private? </td>
+        </tr>
+        <% for(let task of tasks){ %>
+            <% if( !currentUser && task.isPrivate || (task.isPrivate && currentUser && !task.owner._id.equals(currentUser))) {%> 
+            <% }else{ %> 
+            <tr>
+                <td>
+                    <%= task.owner.username %>
+                </td>
+                <td>
+                    <%= task.title %>
+                </td>
+                <td>
+                    <% if(task.isPrivate){ %>
+                        &check;
+                        <% }else{ %>
+                            &#10005;
+                            <% } %>
+                </td>
+                <td>
+                    <% if(currentUser && task.owner._id.equals(currentUser)){ %>
+
+                    <form class="d-inline" action='/tasks/<%=task._id%>/edit'>
+                        <button id="editButton" class="btn btn-info">Edit</button>
+                    </form>
+
+                    <button id="deleteButton" class="btn btn-danger"
+                        onclick="deleteBtn('<%=task._id%>')">Delete</button>
+
+                    <% } %> 
+                </td>
+            </tr>
+            <% }} %>
+    </table>
+
+    <script src="/javascripts/home.js"></script>
